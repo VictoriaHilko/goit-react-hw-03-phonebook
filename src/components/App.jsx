@@ -5,7 +5,10 @@ import { Section } from "./Section/Section";
 
 const { Component } = require("react")
 
+const CONTACTS_LIST = 'contacts';
+
 export class App extends Component {
+
   state = {
     contacts: [
       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -15,6 +18,19 @@ export class App extends Component {
     ],
     filter: ''
   };
+
+  componentDidMount() {
+    const contactsData = localStorage.getItem(CONTACTS_LIST);
+     if (contactsData) {
+      this.setState({
+        contacts: JSON.parse(contactsData)
+      });
+     }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(CONTACTS_LIST, JSON.stringify(this.state.contacts));
+  }
 
   saveContact = data => {
     this.setState(({ contacts }) =>
