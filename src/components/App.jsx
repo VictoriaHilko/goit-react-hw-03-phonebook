@@ -21,16 +21,18 @@ export class App extends Component {
 
   componentDidMount() {
     const contactsData = localStorage.getItem(CONTACTS_LIST);
-     if (contactsData) {
+    if (contactsData) {
       this.setState({
         contacts: JSON.parse(contactsData)
       });
-     }
+    }
   }
 
-  componentDidUpdate() {
-    localStorage.setItem(CONTACTS_LIST, JSON.stringify(this.state.contacts));
-  }
+  componentDidUpdate = prevState => {
+    if (prevState.contacts != this.state.contacts) {
+      localStorage.setItem(CONTACTS_LIST, JSON.stringify(this.state.contacts));
+    }
+  };
 
   saveContact = data => {
     this.setState(({ contacts }) =>
@@ -50,7 +52,7 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(({ id }) => idContact !== id),
     }));
-  }; 
+  };
 
   render() {
     const { contacts, filter } = this.state
